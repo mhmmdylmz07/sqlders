@@ -1,0 +1,150 @@
+
+
+/*===============DELETE===============================
+ 
+     === DELETE FROM  TABLO_ADI;===   BU KOMUT TABLONUN TUM ICERIGINI SILER TABLOYU SILMEZ
+ DML KONUT OLDUGU ICIN ARKASINDAN WHERE GIBI KONUTLARDA YAZILABILIR
+   
+   ==== DELETE FROM TABLO_ADI 
+   =====WHERE SUTUN_ADI = VERI;
+   BU KOMUT ISE WHEREIN BELIRTTIGI YERLERI SILER*/
+   
+   CREATE TABLE ogrenci2
+   (
+    ID CHAR(3),
+    isim VARCHAR2(50),
+    veli_isim VARCHAR2(50),
+    yazili_notu NUMBER(5)
+   
+   );
+   
+INSERT INTO ogrenci2 VALUES(123,'ali can','hasan ',75);
+INSERT INTO ogrenci2 VALUES(124,'merve gul',' ayse',85);
+INSERT INTO ogrenci2 VALUES(125,'kemal yasa','hasan ',85);
+INSERT INTO ogrenci2 VALUES(126,'nesibe yilmz','ayse ',95);
+INSERT INTO ogrenci2 VALUES(127,'mustafa bak','can',99);
+      
+  SELECT * FROM ogrenci2;    
+     DROP TABLE ogrenci2; ----- DDL KOMUTTUR TABLOYU SILER COP KUTUSUNA GONDERIRIR
+     DROP TABLE ogrenci2 PURGE; -----TAMAMEN SILER . COP KUTUSUNA ATMADAN
+     FLASHBACK table ogrenci2 to BEFORE DROP;  --- cop kutusundaki tablotu geri getir
+     
+  /*======================================================
+  SECENEK SILMEK ICIN "WHERE" ANAHTAR KELIMESI KULLANILIR
+================================ ===========================*/ 
+-- ID SI 124 OLAN OGRENCIYI SILELIM
+
+DELETE FROM ogrenci2
+WHERE id=124;
+
+SELECT * FROM ogrenci2;   
+
+
+-- ADI KEMAL YASA OLANI SILELIM
+
+DELETE FROM ogrenci2 WHERE isim ='kemal yasa';
+
+SELECT * FROM ogrenci2;   
+  /*======================================================
+ BIRDEN FAZLA VERI SILMEK ICIN 
+================================ ===========================*/ 
+
+-- ADI NESIBE YILMAZZ VE MUSTAFA BAKI SILMEK
+
+DELETE FROM ogrenci2
+WHERE isim = 'nesibe yilmz' or isim='mustafa bak';  -- BURADA AND KELIMESI KULLANILMAZ
+
+
+DELETE FROM ogrenci2
+WHERE isim = 'ali can' and id=123;
+
+-- ID SI 126 DAN BUYUK OLANI SILELIM
+      
+      
+ DELETE FROM ogrenci2
+WHERE id>126; -- BURADA AND KELIMESI KULLANILMAZ
+   
+ SELECT * FROM ogrenci2;  
+ 
+ -- ID SI 123,125,126 OLANI SILELIM
+ 
+ DELETE FROM ogrenci2
+WHERE id IN (123,125,126);
+---------TAMAMNINI SIMEK ICIN----------------
+
+DELETE FROM ogrenci2;
+--************** EGER TABLONUN TAMAMNINI SILDIGIMIZ ICIN ONU GERI GETIRMEK ICIN***********
+
+ROLLBACK;
+
+/*===============  TRUNCATE      ===============================
+  DELETE GIBI TUM VERLERI SILER. AMA SECMELI SILME YAPMAZ. DDL KOMUTTUR.
+  ROLLBACK ILE GERI ALMA YAPILAMAZ. DELETE KOMUTUNUN */
+  
+  TRUNCATE TABLE ogrenci2;
+  
+  SELECT * FROM ogrenci2;
+  
+
+ /*======================================================
+TABLOLAR ARASINDA ILISKI VAR ISE VERILER NAASIL SILINEBILIR
+================================ ===========================*/ 
+
+  
+   
+   CREATE TABLE talebe
+   (
+    ID CHAR(3),
+    isim VARCHAR2(50),
+    veli_isim VARCHAR2(50),
+    yazili_notu NUMBER(5), 
+    CONSTRAINT talebe_pk primary key (id)
+   
+   );
+   
+INSERT INTO talebe VALUES(123,'ali can','hasan ',75);
+INSERT INTO talebe VALUES(124,'merve gul',' ayse',85);
+INSERT INTO talebe VALUES(125,'kemal yasa','hasan ',85);
+INSERT INTO talebe VALUES(126,'nesibe yilmz','ayse ',95);
+INSERT INTO talebe VALUES(127,'mustafa bak','can',99);
+      
+  DROP TABLE talebe;
+  
+  
+  
+    CREATE TABLE notlar
+   (
+    talebe_id CHAR(3),
+    ders_adi VARCHAR2(50),
+   
+    yazili_notu NUMBER(5), 
+    CONSTRAINT notlar_pk FOREIGN KEY (talebe_id) REFERENCES talebe(id)
+   
+   );
+  
+INSERT INTO notlar VALUES('123','kimya ',75);
+INSERT INTO notlar VALUES('124',' fizik',65);
+INSERT INTO notlar VALUES('125','fizik ',75);
+INSERT INTO notlar VALUES('126','tarih ',90);
+INSERT INTO notlar VALUES('127','matemetik',90);
+      
+  SELECT * FROM talebe;
+   SELECT * FROM notlar;
+  
+DELETE FROM talebeler    --ILK ONCE CHILD DAKINI SILMEMIZ LAZIM
+WHERE id=124;
+--YANI;
+  
+  DELETE FROM notlar   
+WHERE talebe_id='124'; -- ilk once NOTLAR tarafi silinmeli
+
+  --- EGER TALEBELER YANI PARENT CLASSI DIREK SILMEK ISTERSEN CONSTRAINT notlar_pk FOREIGN KEY (talebe_id) REFERENCES talebe(id)
+-- BUNDAN SONRA ON DELETE CASCADE EKLEMEYIZ
+-- ON DELETE CASCADE KODUNU YAPARSAN PARENT DAKI SILINEN BIR KAYIT ILE ILISKILI OLAN TUM CHILD KAYITLRINI SILER
+
+  
+  
+
+
+ 
+ 

@@ -1,0 +1,121 @@
+CREATE TABLE ogrenciler
+(  id NUMBER(9),
+   isim VARCHAR2(58),
+   adres VARCHAR2(56),
+   sinav_notu NUMBER(5)
+
+);
+
+INSERT INTO ogrenciler VALUES (123,'muhammed yilmaz','kayseri',81);
+INSERT INTO ogrenciler VALUES (124,'fatma yilmaz','konya',54);
+INSERT INTO ogrenciler VALUES (125,'sanki yilmaz','istanbul',90);
+
+SELECT * FROM ogrenciler;  -- BU KOMUT TUM TABLE GETRIRIR 
+
+
+--==============================================
+-- DERS NOTU 80 DEN BUYUK OLANLARI GOSTERMEK ICIN
+--=================================================
+SELECT * FROM ogrenciler WHERE sinav_notu>80;  --- BURADA NOTU 80 OLNALARIN TUM OZELLIKLERINI GOSTERIR
+
+--=======================================================================
+ --NOTU 80DEN BUYUK OLANLARINI SADECE ISIM BILGIERINI ALMAK ICIN ADRES BLGISI OLMADAN
+ --=====================================================
+ SELECT isim
+ FROM ogrenciler               --   BURADA ISE SADECE ISIM DEDIGMIZ ICIN SELECT DEN SONRA ISTEDIGIMIZ YERIN KOMUTUNU YAZMAYLIYZ
+ WHERE sinav_notu>80;
+ 
+ 
+ SELECT isim,sinav_notu
+ FROM ogrenciler               --   BURADA ISE NOTU ISIM DEDIGMIZ ICIN SELECT DEN SONRA ISTEDIGIMIZ YERIN KOMUTUNU YAZMAYLIYZ
+ WHERE sinav_notu>80;
+
+
+ SELECT id,sinav_notu
+ FROM ogrenciler               --   BURADA ISE NOTU ISIM DEDIGMIZ ICIN SELECT DEN SONRA ISTEDIGIMIZ YERIN KOMUTUNU YAZMAYLIYZ
+ WHERE sinav_notu>80;
+
+SELECT *FROM ogrenciler WHERE adres='konya';  --KONYA YASAYANLARIN OOZELLIKLERINI CIKARTTIK
+                                              -- SEHIRI YAZARSAK BUYUK KUCUK HARF ONEMLI DIKKAT EDILMELI
+                                              
+ -- EGER SILMEK ISTEDGIMIZDE SOLE OLUR
+ 
+ DELETE FROM ogrenciler WHERE id=125;
+ 
+ DROP TABLE ogrenciler;
+ 
+ CREATE TABLE Personel (
+  
+  id CHAR(5),
+  isim VARCHAR2(30),
+   maas NUMBER(4)
+ 
+ );
+  INSERT INTO personel VALUES ('1001','muhammed yilmaz',7000);
+   INSERT INTO personel VALUES ('1002','fatma yilmaz',5000);
+   INSERT INTO personel VALUES ('1003','sukren yilmaz',8000);
+   INSERT INTO personel VALUES ('1004','deniz yilmaz',9000);
+   INSERT INTO personel VALUES ('1005','murat yilmaz',3000);
+   
+   
+ SELECT * FROM personel;
+ 
+ 
+ --*********************BETWEEN KOMUTU**************************
+ --******************** BETWEEN KOMUTU ***************************
+ 
+ 
+ --=================================================================================
+-- ID SI 1001 ILE 1003 OLANLARIN TUM BILGILERINI GETIR (HERSEY DEDIGI ICI * KOYMALIYIZ
+--==================================================================================
+ SELECT * FROM personel WHERE id >= '1001' AND id<= '1003';
+  
+ SELECT id,isim FROM personel WHERE id BETWEEN '1001' AND '1004';
+ 
+  --=================================================================================
+-- DENIZ ILE MURAT ARASINDAKI PERSONEL BILGILERINI YAZDIRINZI
+--==================================================================================
+ SELECT * FROM personel WHERE isim BETWEEN 'deniz yilmaz' AND 'murat yilmaz';
+
+ --=================================================================================
+-- ID SI 1002 ILE 1004 ARASINDA OLMAYANLARI LISTEYELIM
+--==================================================================================
+
+SELECT * FROM personel WHERE id NOT BETWEEN '1002' AND '1004';
+
+ --*********************IN KOMUTU**************************
+ --******************** IN KOMUTU ***************************
+ 
+ -- BBIRDEN FAZLA SEYE ESIT MI DIE BAKILIR.
+ 
+ --=====================================================
+ -- 1001,1002,1004  SECMEK ICIN "IN KOMUTUNU " KULLANMAYILIZ
+ --=====================================================
+ 
+ SELECT * FROM personel WHERE id = '1001' OR id= '1002' OR id='1004';      -- 1.YOL
+ SELECT * FROM personel WHERE id IN('1001','1002','1004');                 --2.YOL        
+ 
+ 
+ --=====================================================
+ -- MAASI 9000 ILE 7000  OLANLARIN BILGILERINI YAZMAK ICIN
+ --=====================================================
+ 
+ SELECT * FROM personel 
+ WHERE maas IN(7000 , 9000); 
+ 
+  --*********************LIKE KOMUTU**************************
+ --******************** LIKE KOMUTU ***************************
+ 
+ SELECT * FROM personel WHERE isim LIKE 'm%';
+  SELECT * FROM personel WHERE isim LIKE '____';
+ SELECT * FROM personel WHERE isim LIKE '_e%';    -- IKINCI HARFI E OLANLARI GOSTERIRI
+  SELECT * FROM personel WHERE maas LIKE '%00';  
+  SELECT * FROM personel WHERE isim LIKE '_u___m%';   --
+ SELECT * FROM personel WHERE isim LIKE '%iz%'; 
+ 
+ SELECT * FROM personel WHERE maas NOT LIKE 7000 ; 
+ 
+
+
+
+
